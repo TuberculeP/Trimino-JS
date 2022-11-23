@@ -16,6 +16,9 @@ header input {
   width: 50px;
   padding: 5px;
 }
+header label {
+  margin: 0 30px;
+}
 
 main canvas {
   display: block;

@@ -2,10 +2,15 @@ const c = document.querySelector("canvas");
 const ctx = c.getContext("2d");
 let coord = [0, 0];
 let reccurence = 3;
+let nb_trimino = 0;
 let count = 0;
 const ANGLE = 90 * Math.PI/180;
 let rotation = 0;
-
+let map = false;
+document.querySelector('input#map').addEventListener('change', function(){
+    map = this.checked;
+    reset();
+})
 
 function rotate(n){
     let temp;
@@ -26,7 +31,9 @@ function reset(){
     ctx.restore()
     ctx.clearRect(0, 0, c.width, c.height);
     coord = [0, 0];
+    nb_trimino = ((2**reccurence)**2-1)/3;
     problemeFinal(reccurence)
+    console.log('Nombre de trimino : '+nb_trimino)
 }
 
 function randint(max) {
@@ -38,6 +45,15 @@ function randcolor() {
         +(40+randint(215))+','
         +(40+randint(215))+','+
         +(40+randint(215))+')';
+}
+
+function colorProg(){
+    let calc = Math.floor((count/nb_trimino)*255);
+    console.log(calc);
+    return 'rgb('
+        +(calc)+','
+        +(calc)+','+
+        +(calc)+')';
 }
 
 function creeTrou(n){
@@ -60,6 +76,7 @@ function dessineProbleme(n,a,trou = null){
 
 function dessineTrimino(n){
     count++;
+    colorProg();
     ctx.beginPath();
     //gauche -> droite
         ctx.lineTo(coord[0]+n, coord[1]);
@@ -80,7 +97,7 @@ function dessineTrimino(n){
     ctx.lineTo(coord[0], coord[1]+n);
     coord[1] += n;
     ctx.closePath();
-    ctx.fillStyle = randcolor();
+    ctx.fillStyle = map? colorProg(): randcolor();
     ctx.strokeStyle = 'black'
     ctx.stroke();
     ctx.fill();
@@ -105,8 +122,6 @@ function dessineComplexe(a,ordre){
         coord[0] +=(a*2**(ordre-2));
         coord[1] -=(a*2**(ordre-2));
         rotate(1);
-
-
     }
 }
 
@@ -140,10 +155,12 @@ function solutionProbleme(n,a,taillebase){
 function problemeFinal(n,a=null, trou=null){
     if(a === null) a = Math.floor(c.width/(2**n));
     dessineProbleme(n, a, trou)
-    if(n > 0){solutionProbleme(n,a,a);}
+    if(n > 0){
+        solutionProbleme(n,a,a)
+    }
 }
 
-document.querySelector('input')
+document.querySelector('input#nombre')
     .addEventListener('change', ()=>{
         reccurence = document.querySelector('input').value;
         reset();
