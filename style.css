@@ -20,11 +20,35 @@ header label {
   margin: 0 30px;
 }
 
-main canvas {
+main > div {
   display: block;
+  width: fit-content;
   margin: 30px auto;
-  max-width: 100%;
   border: 1px solid black;
+  position: relative;
+}
+main > div canvas {
+  display: block;
+  max-width: 100%;
+}
+main > div div.quadrillage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  height: 512px;
+  width: 512px;
+}
+main > div div.quadrillage > div {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+main > div div.quadrillage > div div {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 /*# sourceMappingURL=style.css.map */

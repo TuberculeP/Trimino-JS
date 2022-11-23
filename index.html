@@ -16,10 +16,17 @@
         <input type="number" id="nombre" min="0" max="9">
         <label for="map">Time Map : </label>
         <input type="checkbox" id="map">
+        <label for="fixed">Carré fixe : </label>
+        <input type="checkbox" id="fixed">
     </div>
 </header>
 <main>
-  <canvas width="512" height="512"></canvas>
+  <div>
+      <canvas width="512" height="512"></canvas>
+      <div class="quadrillage">
+
+      </div>
+  </div>
 </main>
 <script src="script.js"></script>
 </body>

@@ -7,8 +7,14 @@ let count = 0;
 const ANGLE = 90 * Math.PI/180;
 let rotation = 0;
 let map = false;
+let fixed = false;
 document.querySelector('input#map').addEventListener('change', function(){
     map = this.checked;
+    reset();
+})
+
+document.querySelector('input#fixed').addEventListener('change', function(){
+    fixed = this.checked;
     reset();
 })
 
@@ -24,7 +30,7 @@ function rotate(n){
     }
 }
 
-function reset(){
+function reset(trou = null){
     count = 0;
     document.querySelector('input').value = reccurence;
     ctx.resetTransform()
@@ -32,8 +38,27 @@ function reset(){
     ctx.clearRect(0, 0, c.width, c.height);
     coord = [0, 0];
     nb_trimino = ((2**reccurence)**2-1)/3;
-    problemeFinal(reccurence)
-    console.log('Nombre de trimino : '+nb_trimino)
+    problemeFinal(reccurence, null, fixed? [0,0]: trou);
+    if(reccurence < 7){
+        quadrille(reccurence);
+    }
+}
+
+function quadrille(n){
+    let wrapper = document.querySelector('div.quadrillage');
+    wrapper.innerHTML="";
+    for(let i=0; i<2**n; i++){
+        wrapper.appendChild(document.createElement('div'));
+        for(let j=0; j<2**n; j++){
+            document.querySelector('.quadrillage>div:last-child')
+                .appendChild(document.createElement('div'));
+            document.querySelector('.quadrillage>div:last-child>div:last-child')
+                .addEventListener('click', ()=>{
+                    console.log([i,j])
+                    reset([j, i]);
+                })
+        }
+    }
 }
 
 function randint(max) {
@@ -49,7 +74,6 @@ function randcolor() {
 
 function colorProg(){
     let calc = Math.floor((count/nb_trimino)*255);
-    console.log(calc);
     return 'rgb('
         +(calc)+','
         +(calc)+','+
